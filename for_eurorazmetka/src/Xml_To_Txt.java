@@ -20,8 +20,6 @@ import java.util.regex.*;
 public class Xml_To_Txt {
    public static void main(String[] args) throws IOException {
 
-       for (int num = 1; num <= 300; num++) {
-
            File file = new File("*.xml"); // Choose Path with your Xml file
 
            boolean ex = file.exists("*.xml"); // Checking if file exists
@@ -137,7 +135,6 @@ public class Xml_To_Txt {
            } catch (ParserConfigurationException | SAXException | IOException e) {
                e.printStackTrace();
            }
-       }
    }
 
     private static void moveFile(String src, String dest ) { // Moving script
