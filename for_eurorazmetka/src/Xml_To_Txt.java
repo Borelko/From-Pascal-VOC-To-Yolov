@@ -22,41 +22,39 @@ public class Xml_To_Txt {
 
        for (int num = 1; num <= 300; num++) {
 
-           File file = new File("*.xml");
+           File file = new File("*.xml"); // Choose Path with your Xml file
 
-           boolean ex = file.exists("*.xml");
+           boolean ex = file.exists("*.xml"); // Checking if file exists
            if (!ex) continue;
 
-           try (FileWriter writer = new FileWriter("*.txt")) {
-               File img = new File("*.png");
-               boolean ex_img = img.exists();
+           try (FileWriter writer = new FileWriter("*.txt")) { // Initialize FileWriter and indicate Path to save Txt file
+               File img = new File("*.png"); // Choose Path with your image file 
+               boolean ex_img = img.exists(); // Checking if file exists
                if (!ex_img) continue;
-               BufferedImage bimg = ImageIO.read(img);
+               BufferedImage bimg = ImageIO.read(img); // Getting width and height of your image
                int r_width = bimg.getWidth();
                int r_height = bimg.getHeight();
 
-                   moveFile("*.png", "*.jpg");
+                   moveFile("*.png", "*.jpg"); // Moving image
 
 
                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                DocumentBuilder db = dbf.newDocumentBuilder();
                Document doc = db.parse(new File(String.valueOf(file)));
                doc.getDocumentElement().normalize();
-               NodeList list = doc.getElementsByTagName("object");
+               NodeList list = doc.getElementsByTagName("object"); // Choosing branch in Xml file
 
                for (int i = 0; i < list.getLength(); i++) {
                    Node node = list.item(i);
                    if (node.getNodeType() == Node.ELEMENT_NODE) {
                        Element element = (Element) node.getChildNodes();
-                       //String res_width = element.getElementsByTagName("width").item(0).getTextContent();
-                       //String res_height = element.getElementsByTagName("height").item(0).getTextContent();
-                       String clas = element.getElementsByTagName("name").item(0).getTextContent();
-                       String xmin = element.getElementsByTagName("xmin").item(0).getTextContent();
-                       String ymin = element.getElementsByTagName("ymin").item(0).getTextContent();
-                       String xmax = element.getElementsByTagName("xmax").item(0).getTextContent();
-                       String ymax = element.getElementsByTagName("ymax").item(0).getTextContent();
+                       String clas = element.getElementsByTagName("name").item(0).getTextContent(); // Getting your parameter
+                       String xmin = element.getElementsByTagName("xmin").item(0).getTextContent(); // Getting your parameter
+                       String ymin = element.getElementsByTagName("ymin").item(0).getTextContent(); // Getting your parameter
+                       String xmax = element.getElementsByTagName("xmax").item(0).getTextContent(); // Getting your parameter
+                       String ymax = element.getElementsByTagName("ymax").item(0).getTextContent(); // Getting your parameter
 
-                       if (clas.equals("human")) {
+                       if (clas.equals("human")) { // Changing classes in YOLO format
 
                            clas = clas.replace("human", "0");
                        } else {
@@ -119,22 +117,22 @@ public class Xml_To_Txt {
                        double y1 = Double.parseDouble(ymin);
                        double x2 = Double.parseDouble(xmax);
                        double y2 = Double.parseDouble(ymax);
-                       double x_center = ((x2 + x1) / 2);
-                       double y_center = ((y2 + y1) / 2);
-                       double width = (abs(x2 - x1));
-                       double height = (abs(y2 - y1));
+                       double x_center = ((x2 + x1) / 2); // count x_center
+                       double y_center = ((y2 + y1) / 2); // count y_center
+                       double width = (abs(x2 - x1)); // count width
+                       double height = (abs(y2 - y1)); // count height
                        if (width >= 6 && height >= 6) {
-                           writer.write(klas + " ");
-                           writer.write((x_center / r_width) + " ");
-                           writer.write((y_center / r_height) + " ");
-                           writer.write((width / r_width) + " ");
-                           writer.write((height / r_height) + " ");
-                           writer.write(System.lineSeparator());
+                           writer.write(klas + " "); // writing klas
+                           writer.write((x_center / r_width) + " "); // writing x center
+                           writer.write((y_center / r_height) + " "); // writing y center
+                           writer.write((width / r_width) + " "); // Writing width
+                           writer.write((height / r_height) + " "); // Writing height
+                           writer.write(System.lineSeparator()); // Move Writer to the next line
                        }
                    }
                }
 
-               System.out.println("Annotation moved From:" + file + \n + " To :" + writer + " Resolution = " + r_height + " x " + r_width);
+               System.out.println("Annotation moved From:" + file + \n + " To :" + writer + " Resolution = " + r_height + " x " + r_width); // Print information about process
 
            } catch (ParserConfigurationException | SAXException | IOException e) {
                e.printStackTrace();
@@ -142,7 +140,7 @@ public class Xml_To_Txt {
        }
    }
 
-    private static void moveFile(String src, String dest ) {
+    private static void moveFile(String src, String dest ) { // Moving script
         Path result = null;
         try {
             result =  Files.move(Paths.get(src), Paths.get(dest));
