@@ -120,12 +120,15 @@ public class Xml_To_Txt {
                        double width = (abs(x2 - x1)); // count width
                        double height = (abs(y2 - y1)); // count height
                        if (width >= 6 && height >= 6) {
+                          // Checking coordinates for (> 0) and (< 1)
+                          if (((x_center / r_width) > 0) && ((y_center / r_height) > 0) && ((width / r_width) > 0) && ((height / r_height) > 0) && ((x_center / r_width) < 1) && ((y_center / r_height) < 1) && ((width / r_width) < 1) && ((height / r_height) < 1)) {
                            writer.write(klas + " "); // writing klas
                            writer.write((x_center / r_width) + " "); // writing x center
                            writer.write((y_center / r_height) + " "); // writing y center
                            writer.write((width / r_width) + " "); // Writing width
                            writer.write((height / r_height) + " "); // Writing height
                            writer.write(System.lineSeparator()); // Move Writer to the next line
+                       }
                        }
                    }
                }
