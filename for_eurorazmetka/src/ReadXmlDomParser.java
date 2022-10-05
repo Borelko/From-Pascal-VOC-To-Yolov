@@ -22,28 +22,24 @@ import java.util.regex.*;
 public class ReadXmlDomParser {
    public static void main(String[] args) throws IOException {
 
-       /*String name = "Kaggle";
-       int humans = 0;
-       int boats = 0;
-       int heavy_boats = 0;
-       int k=44;*/
-
+       String name = "*";
+      
        for (int num = 1; num <= 300; num++) {
 
-           File file = new File("E:/Work/Nastya_P/VOCdevkit/VOC/Annotations/1 (" + num + ").xml");
+           File file = new File("E:/Work/" + name + "/VOCdevkit/VOC/Annotations/1 (" + num + ").xml");
 
            boolean ex = file.exists();
            if (!ex) continue;
 
            try (FileWriter writer = new FileWriter("E:/Work/Razmetka_final/Train/labels/1 (" + num + ").txt")) {
-               File img = new File("E:/Work/Nastya_P/VOCdevkit/VOC/JPEGImages/1 (" + num + ").jpg");
+               File img = new File("E:/Work/" + name + "/VOCdevkit/VOC/JPEGImages/1 (" + num + ").jpg");
                boolean ex_img = img.exists();
                if (!ex_img) continue;
                BufferedImage bimg = ImageIO.read(img);
                int r_width = bimg.getWidth();
                int r_height = bimg.getHeight();
 
-                   moveFile("E:/Work/Nastya_P/VOCdevkit/VOC/JPEGImages/1 (" + num + ").jpg", "E:/Work/Razmetka_final/Train/images/1 (" + num + ").jpg");
+                   moveFile("E:/Work/" + name + "/VOCdevkit/VOC/JPEGImages/1 (" + num + ").jpg", "E:/Work/Razmetka_final/Train/images/1 (" + num + ").jpg");
 
 
                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -63,6 +59,7 @@ public class ReadXmlDomParser {
                        String ymin = element.getElementsByTagName("ymin").item(0).getTextContent();
                        String xmax = element.getElementsByTagName("xmax").item(0).getTextContent();
                        String ymax = element.getElementsByTagName("ymax").item(0).getTextContent();
+
                        if (clas.equals("human")) {
 
                            clas = clas.replace("human", "0");
@@ -131,41 +128,22 @@ public class ReadXmlDomParser {
                        double width = (abs(x2 - x1));
                        double height = (abs(y2 - y1));
                        if (width >= 6 && height >= 6) {
-                                   if (klas == 0) {
-                                       if ((x_center > 920 && y_center < 688 && x_center < 1178)  || (y_center < 648) ||  (x_center> 1586 && y_center< 711 && x_center < 1848)) {
-
-                                       }else {
-                                           writer.write(klas + " ");
-                                           writer.write((x_center / r_width) + " ");
-                                           writer.write((y_center / r_height) + " ");
-                                           writer.write((width / r_width) + " ");
-                                           writer.write((height / r_height) + " ");
-                                           writer.write(System.lineSeparator());
-                                       }
-                                   }else{
-
                            writer.write(klas + " ");
                            writer.write((x_center / r_width) + " ");
                            writer.write((y_center / r_height) + " ");
                            writer.write((width / r_width) + " ");
                            writer.write((height / r_height) + " ");
                            writer.write(System.lineSeparator());
-                           }
-
                        }
                    }
                }
 
                System.out.println("Annotation moved From:" + file + " Resolution = " + r_height + " x " + r_width);
 
-
            } catch (ParserConfigurationException | SAXException | IOException e) {
                e.printStackTrace();
            }
-
        }
-
-
    }
 
     private static void moveFile(String src, String dest ) {
