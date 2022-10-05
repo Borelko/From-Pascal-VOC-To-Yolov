@@ -17,29 +17,25 @@ import static java.lang.Math.abs;
 import java.nio.file.Paths;
 import java.util.regex.*;
 
-
-
-public class ReadXmlDomParser {
+public class Xml_To_Txt {
    public static void main(String[] args) throws IOException {
 
-       String name = "*";
-      
        for (int num = 1; num <= 300; num++) {
 
-           File file = new File("E:/Work/" + name + "/VOCdevkit/VOC/Annotations/1 (" + num + ").xml");
+           File file = new File("*.xml");
 
-           boolean ex = file.exists();
+           boolean ex = file.exists("*.xml");
            if (!ex) continue;
 
-           try (FileWriter writer = new FileWriter("E:/Work/Razmetka_final/Train/labels/1 (" + num + ").txt")) {
-               File img = new File("E:/Work/" + name + "/VOCdevkit/VOC/JPEGImages/1 (" + num + ").jpg");
+           try (FileWriter writer = new FileWriter("*.txt")) {
+               File img = new File("*.png");
                boolean ex_img = img.exists();
                if (!ex_img) continue;
                BufferedImage bimg = ImageIO.read(img);
                int r_width = bimg.getWidth();
                int r_height = bimg.getHeight();
 
-                   moveFile("E:/Work/" + name + "/VOCdevkit/VOC/JPEGImages/1 (" + num + ").jpg", "E:/Work/Razmetka_final/Train/images/1 (" + num + ").jpg");
+                   moveFile("*.png", "*.jpg");
 
 
                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -138,7 +134,7 @@ public class ReadXmlDomParser {
                    }
                }
 
-               System.out.println("Annotation moved From:" + file + " Resolution = " + r_height + " x " + r_width);
+               System.out.println("Annotation moved From:" + file + \n + " To :" + writer + " Resolution = " + r_height + " x " + r_width);
 
            } catch (ParserConfigurationException | SAXException | IOException e) {
                e.printStackTrace();
