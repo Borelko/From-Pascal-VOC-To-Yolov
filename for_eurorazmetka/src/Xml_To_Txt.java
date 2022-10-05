@@ -110,11 +110,11 @@ public class Xml_To_Txt {
                            }
                        }
 
-                       int klas = Integer.parseInt(clas);
-                       double x1 = Double.parseDouble(xmin);
-                       double y1 = Double.parseDouble(ymin);
-                       double x2 = Double.parseDouble(xmax);
-                       double y2 = Double.parseDouble(ymax);
+                       int klas = Integer.parseInt(clas); // clas from String to int 
+                       double x1 = Double.parseDouble(xmin); // xmin from String to double 
+                       double y1 = Double.parseDouble(ymin); // ymin from String to double 
+                       double x2 = Double.parseDouble(xmax); // xmax from String to double 
+                       double y2 = Double.parseDouble(ymax); // ymax from String to double 
                        double x_center = ((x2 + x1) / 2); // count x_center
                        double y_center = ((y2 + y1) / 2); // count y_center
                        double width = (abs(x2 - x1)); // count width
