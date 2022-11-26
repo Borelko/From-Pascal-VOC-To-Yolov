@@ -37,6 +37,64 @@ public class ReadXmlDomParser {
         }
     }
 
+        public static void Writer(File file, File img, String To_Path_label, String To_Path_image){
+
+        try (FileWriter writer = new FileWriter(To_Path_label)) {
+
+            BufferedImage bimg = ImageIO.read(img);
+            int r_width = bimg.getWidth();
+            int r_height = bimg.getHeight();
+            moveFile (String.valueOf(img), To_Path_image);
+
+            NodeList list = GET_OBJ_FROM_XML(file);
+
+            for (int i = 0; i < list.getLength(); i++) {
+
+                Node node = list.item(i);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element element = (Element) node.getChildNodes();
+
+                    String clas = element.getElementsByTagName("name").item(0).getTextContent();
+                    String xmin = element.getElementsByTagName("xmin").item(0).getTextContent();
+                    String ymin = element.getElementsByTagName("ymin").item(0).getTextContent();
+                    String xmax = element.getElementsByTagName("xmax").item(0).getTextContent();
+                    String ymax = element.getElementsByTagName("ymax").item(0).getTextContent();
+
+                    String ccls = Change_class(clas);
+
+                    if (!ccls.equals("SUS")) {
+                        int klas = Integer.parseInt(ccls);
+                        double x1 = Double.parseDouble(xmin);
+                        double y1 = Double.parseDouble(ymin);
+                        double x2 = Double.parseDouble(xmax);
+                        double y2 = Double.parseDouble(ymax);
+                        double x_center = ((x2 + x1) / 2);
+                        double y_center = ((y2 + y1) / 2);
+                        double width = (abs(x2 - x1));
+                        double height = (abs(y2 - y1));
+
+                        if (width >= 6 && height >= 6) {
+                            if (((x_center / r_width) > 0) && ((y_center / r_height) > 0) && ((width / r_width) > 0) && ((height / r_height) > 0) && ((x_center / r_width) < 1) && ((y_center / r_height) < 1) && ((width / r_width) < 1) && ((height / r_height) < 1)) {
+                                writer.write(klas + " ");
+                                writer.write((x_center / r_width) + " ");
+                                writer.write((y_center / r_height) + " ");
+                                writer.write((width / r_width) + " ");
+                                writer.write((height / r_height) + " ");
+                                writer.write(System.lineSeparator());
+                            }
+                        }
+                    }
+                }
+            }
+            System.out.println("Annotation moved From:" + file + " Resolution = " + r_height + " x " + r_width);
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void moveFile(String src, String dest) {
         Path result = null;
         try {
@@ -49,6 +107,14 @@ public class ReadXmlDomParser {
         } else {
             System.out.println("File movement from" + src + " To " + dest + "  Failed.");
         }
+    }
+    public static NodeList GET_OBJ_FROM_XML(File file) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(new File(String.valueOf(file)));
+        doc.getDocumentElement().normalize();
+        NodeList list = doc.getElementsByTagName("object");
+        return list;
     }
     public static String Change_class(String clas) {
         if (clas.equals("human")) {
@@ -156,70 +222,4 @@ public class ReadXmlDomParser {
         }
         return clas;
     }
-    public static void Writer(File file, File img, String To_Path_label, String To_Path_image){
-
-        try (FileWriter writer = new FileWriter(To_Path_label)) {
-
-            BufferedImage bimg = ImageIO.read(img);
-            int r_width = bimg.getWidth();
-            int r_height = bimg.getHeight();
-            moveFile (String.valueOf(img), To_Path_image);
-
-            NodeList list = GET_OBJ_FROM_XML(file);
-
-            for (int i = 0; i < list.getLength(); i++) {
-
-                Node node = list.item(i);
-
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-
-                    Element element = (Element) node.getChildNodes();
-
-                    String clas = element.getElementsByTagName("name").item(0).getTextContent();
-                    String xmin = element.getElementsByTagName("xmin").item(0).getTextContent();
-                    String ymin = element.getElementsByTagName("ymin").item(0).getTextContent();
-                    String xmax = element.getElementsByTagName("xmax").item(0).getTextContent();
-                    String ymax = element.getElementsByTagName("ymax").item(0).getTextContent();
-
-                    String ccls = Change_class(clas);
-
-                    if (!ccls.equals("SUS")) {
-                        int klas = Integer.parseInt(ccls);
-                        double x1 = Double.parseDouble(xmin);
-                        double y1 = Double.parseDouble(ymin);
-                        double x2 = Double.parseDouble(xmax);
-                        double y2 = Double.parseDouble(ymax);
-                        double x_center = ((x2 + x1) / 2);
-                        double y_center = ((y2 + y1) / 2);
-                        double width = (abs(x2 - x1));
-                        double height = (abs(y2 - y1));
-
-                        if (width >= 6 && height >= 6) {
-                            if (((x_center / r_width) > 0) && ((y_center / r_height) > 0) && ((width / r_width) > 0) && ((height / r_height) > 0) && ((x_center / r_width) < 1) && ((y_center / r_height) < 1) && ((width / r_width) < 1) && ((height / r_height) < 1)) {
-                                writer.write(klas + " ");
-                                writer.write((x_center / r_width) + " ");
-                                writer.write((y_center / r_height) + " ");
-                                writer.write((width / r_width) + " ");
-                                writer.write((height / r_height) + " ");
-                                writer.write(System.lineSeparator());
-                            }
-                        }
-                    }
-                }
-            }
-            System.out.println("Annotation moved From:" + file + " Resolution = " + r_height + " x " + r_width);
-
-        } catch (ParserConfigurationException | SAXException | IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public static NodeList GET_OBJ_FROM_XML(File file) throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(new File(String.valueOf(file)));
-        doc.getDocumentElement().normalize();
-        NodeList list = doc.getElementsByTagName("object");
-        return list;
-    }
-
 }
