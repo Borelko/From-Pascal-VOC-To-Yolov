@@ -19,14 +19,14 @@ import java.nio.file.Paths;
 
 public class ReadXmlDomParser {
     public static void main(String[] args){
-        for (int num = 1; num < 2000; num++) {
+        for (int num = 1; num < 10000; num++) {
 
             String From_Path = "E:/Work/train/1 (" + num + ")";
             File file = new File(From_Path + ".xml"); //Input .xml file
             File img = new File(From_Path + ".jpg");  //Input .jpg file
             String Tag = "test"; // Pattern name of output file
-            String To_Path_label = "E:/Work/Razmetka_final/Train/labels/" + Tag + "_" + num + ".txt"; // (for example C:/labled/Train/labels/test_(number).txt)
-            String To_Path_image = "E:/Work/Razmetka_final/Train/images/" + Tag + "_" + num + ".jpg"; // (for example C:/labled/Train/images/test_(number).jpg)
+            String To_Path_label = "C:/labled/Train/labels/" + Tag + "_" + num + ".txt"; // (for example C:/labled/Train/labels/test_(number).txt)
+            String To_Path_image = "C:/labled/Train/images/" + Tag + "_" + num + ".jpg"; // (for example C:/labled/Train/images/test_(number).jpg)
             boolean ex_file = file.exists();
             if (!ex_file) continue;  // Check for existing xml file
             boolean ex_img = img.exists();
